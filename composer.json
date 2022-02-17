@@ -1,0 +1,17 @@
+{
+    "name": "julia-queen/kinopoisk-package",
+    "description": "Getting movie info from the Kinopoisk website",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Queen\\KinopoiskPackage\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Julia Koroleva",
+            "email": "youlka2@gmail.com"
+        }
+    ],
+    "require": {}
+}
