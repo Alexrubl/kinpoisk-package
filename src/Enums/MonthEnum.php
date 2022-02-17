@@ -1,6 +1,6 @@
 <?php
 
-namespace Queen\KinopoiskPackage\enums;
+namespace Queen\KinopoiskPackage\Enums;
 
 class MonthEnum
 {
