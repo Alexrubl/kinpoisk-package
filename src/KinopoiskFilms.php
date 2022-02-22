@@ -10,6 +10,7 @@ class KinopoiskFilms
     const VERSION = 'v2.2';
     //метод api
     const FILMS = 'films';
+    const STAFF = 'staff';
 
     //типы запросов
     const TYPE_FACTS = 'facts';
@@ -46,10 +47,10 @@ class KinopoiskFilms
         $this->apiKey = $apiKey;
     }
 
-    private function api($id = null, $asArray = false, $type = null, $params = [])
-    {
-        $url = $this->url . self::VERSION . '/' . static::FILMS;
-
+    private function api($id = null, $asArray = false, $type = null, $params = [], $version = null, $staff = null)
+    {        
+        $url = $this->url . ($version != null ? $version : self::VERSION) . '/' . ($staff == true ? static::STAFF : static::FILMS);
+        
         if (!empty($id)) {
             $url .= '/' . $id;
         }
@@ -65,15 +66,30 @@ class KinopoiskFilms
         $headers = [];
         $headers[] = "X-API-KEY: {$this->apiKey}";
         $headers[] = 'Content-Type: application/json';
-
+        
+        info($url);
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($curl, CURLOPT_URL, $url);
+        
 
         return json_decode(curl_exec($curl), $asArray);
+    }
+
+    /**
+     * Получить основную информацию об актерах по id фильма на сайте Кинопоиска
+     *
+     * @param int $id
+     * @param bool $asArray
+     *
+     * @return mixed
+     */
+    public function getStaffInfoById(int $id, bool $asArray = false)
+    {
+        return $this->api(null, $asArray, null, [ 'filmId' => $id ], 'v1', true);
     }
 
     /**
